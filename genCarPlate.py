@@ -71,16 +71,26 @@ class GenPlateScene:
 
         for i in range(perSize*31-1):
             outputPath = outDir + str(i // perSize) + "/"
-            if (not os.path.exists(outputPath)):
-                os.mkdir(outputPath)
+            # if (not os.path.exists(outputPath)):
+            #     os.mkdir(outputPath)
+            if (not os.path.exists(outDir)):
+                os.mkdir(outDir)
             plate_str = self.gen_plate_string(i, perSize)
             img, loc =  self.generate(plate_str)
             if img is None:
                 continue
-            cv2.imwrite(outputPath + "/" + plate_str + ".jpg", img)
+            # cv2.imwrite(outputPath + "/" + plate_str + ".jpg", img)
+            rand_tail = random.randint(10000, 99999)
+            name = '{}_{}.jpg'.format(plate_str, rand_tail)
+            cv2.imwrite(outDir + "/" + name + ".jpg", img)
             #with open(outputPath + "/" + plate_str + ".txt", 'w') as obj:
             #    line = ','.join([str(v) for v in loc]) + ',"' + plate_str + '"\n' 
             #    obj.write(line)
+    
+    def labelToSaveFilename(label):
+        rand_tail = random.randint(10000, 99999)
+        name = '{}_{}.jpg'.format(label, rand_tail)
+        return name
 
 def parse_args():
     parser = argparse.ArgumentParser()
